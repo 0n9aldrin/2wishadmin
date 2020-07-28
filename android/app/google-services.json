@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "439283326087",
+    "firebase_url": "https://wish-dd240.firebaseio.com",
+    "project_id": "wish-dd240",
+    "storage_bucket": "wish-dd240.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439283326087:android:3513ece2523d89c614ec22",
+        "android_client_info": {
+          "package_name": "com.aldrinong.two_wish"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439283326087-5vojndmsum8b1nqvev8lsc8mtuck1htb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjuBwvQ8xuxJSd1KEYdHUc6Sa5lSm9dzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439283326087-5vojndmsum8b1nqvev8lsc8mtuck1htb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439283326087:android:a731b8d10e8f481614ec22",
+        "android_client_info": {
+          "package_name": "com.aldrinong.two_wish_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439283326087-5vojndmsum8b1nqvev8lsc8mtuck1htb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjuBwvQ8xuxJSd1KEYdHUc6Sa5lSm9dzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439283326087-5vojndmsum8b1nqvev8lsc8mtuck1htb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
