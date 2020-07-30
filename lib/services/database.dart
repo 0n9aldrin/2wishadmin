@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseService {
   final CollectionReference requestsCollection =
       Firestore.instance.collection('requests');
+  final CollectionReference organisationCollection =
+      Firestore.instance.collection('organisations');
   Future<void> updateRequestsData(
       {String phoneNumber,
       String itemId,
@@ -15,4 +17,20 @@ class DatabaseService {
       'Notes': note,
     });
   }
+
+  Future<void> addOrganisationData(
+      {String name,
+      String organisationId,
+      String location,
+      String description,
+      List<Map<String, dynamic>> items}) async {
+    return await organisationCollection.document().setData({
+      'Name': name,
+      'Organisation ID': organisationId,
+      'Location': location,
+      'Description': description,
+      'Items': items
+    });
+  }
+
 }

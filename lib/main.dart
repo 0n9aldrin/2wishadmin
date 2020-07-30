@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:two_wish_admin/services/database.dart';
+import 'package:two_wish_admin/screens/home_page.dart';
+import 'package:two_wish_admin/screens/update_organisations.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,32 +16,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Admin"),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          DatabaseService().updateRequestsData(
-              phoneNumber: '+6281284538316',
-              itemId: '000069',
-              donationAmount: 15,
-              note: 'myController.text');
-        },
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MyHomePage(),
+        '/updateOrganisation': (context) => UpdateOrganisation(),
+        '/requests': (context) => UpdateOrganisation(),
+      },
     );
   }
 }
