@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:two_wish_admin/screens/home_page.dart';
+import 'package:two_wish_admin/screens/requests_page.dart';
 import 'package:two_wish_admin/screens/update_organisations.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MyHomePage(),
         '/updateOrganisation': (context) => UpdateOrganisation(),
-        '/requests': (context) => UpdateOrganisation(),
+        '/requests': (context) => RequestsPage(),
       },
     );
   }

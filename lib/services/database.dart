@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:two_wish_admin/models/request.dart';
 
 class DatabaseService {
   final CollectionReference requestsCollection =
       Firestore.instance.collection('requests');
   final CollectionReference organisationCollection =
       Firestore.instance.collection('organisations');
+
   Future<void> updateRequestsData(
       {String phoneNumber,
       String itemId,
@@ -33,4 +35,18 @@ class DatabaseService {
     });
   }
 
+  List<Request> requestListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Request(
+        donationAmount: doc.data['Donation amount'] ?? 0,
+        itemId: doc.data['Item ID'] ?? '',
+        notes: doc.data['Notes'] ?? '',
+        phoneNumber: doc.data['Phone Number'] ?? '',
+      );
+    }).toList();
+  }
+
+  Stream<List<Request>> get requests {
+    return requestsCollection.snapshots().map(requestListFromSnapshot);
+  }
 }
