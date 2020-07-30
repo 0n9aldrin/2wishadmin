@@ -18,6 +18,7 @@ class _RequestsPageState extends State<RequestsPage> {
             stream: DatabaseService().requests,
             builder: (context, snapshot) {
               List<Request> requestList = snapshot.data;
+              requestList = List.from(requestList.reversed);
               return !snapshot.hasData
                   ? Text("Loading...")
                   : ListView.separated(
