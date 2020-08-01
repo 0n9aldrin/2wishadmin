@@ -12,7 +12,7 @@ class DrawerWidget extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text('Drawer Header'),
+            child: Text('Admin'),
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
@@ -26,9 +26,9 @@ class DrawerWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.shopping_basket),
-            title: Text('Update Organisation'),
+            title: Text('Add Organisation'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/updateOrganisation');
+              Navigator.pushReplacementNamed(context, '/addOrganisation');
             },
           ),
           ListTile(

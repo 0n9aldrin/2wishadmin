@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:two_wish_admin/models/organisation.dart';
 import 'package:two_wish_admin/models/request.dart';
 
 class DatabaseService {
@@ -6,33 +7,48 @@ class DatabaseService {
       Firestore.instance.collection('requests');
   final CollectionReference organisationCollection =
       Firestore.instance.collection('organisations');
-
-  Future<void> updateRequestsData(
-      {String phoneNumber,
-      String itemId,
-      int donationAmount,
-      String note}) async {
-    return await requestsCollection.document('123').setData({
-      'Phone Number': phoneNumber,
-      'Item ID': itemId,
-      'Donation amount': donationAmount,
-      'Notes': note,
-    });
-  }
+  final CollectionReference globalCollection =
+      Firestore.instance.collection('global');
 
   Future<void> addOrganisationData(
       {String name,
-      String organisationId,
+      String documentID,
+      String location,
+      String description,
+      List<Map<String, dynamic>> items}) async {
+    return await organisationCollection.document(documentID).setData({
+      'Name': name,
+      'Location': location,
+      'Description': description,
+      'Items': items
+    });
+  }
+
+  Future<void> updateOrganisationData(
+      {String name,
       String location,
       String description,
       List<Map<String, dynamic>> items}) async {
     return await organisationCollection.document().setData({
       'Name': name,
-      'Organisation ID': organisationId,
       'Location': location,
       'Description': description,
       'Items': items
     });
+  }
+
+  List<Organisation> organisationListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Organisation(
+          name: doc.data['Name'] ?? '',
+          location: doc.data['Location'] ?? '',
+          description: doc.data['Description'] ?? '',
+          items: doc.data['Items'] ?? []);
+    }).toList();
+  }
+
+  Stream<List<Organisation>> get organisations {
+    return organisationCollection.snapshots().map(organisationListFromSnapshot);
   }
 
   List<Request> requestListFromSnapshot(QuerySnapshot snapshot) {
@@ -48,5 +64,18 @@ class DatabaseService {
 
   Stream<List<Request>> get requests {
     return requestsCollection.snapshots().map(requestListFromSnapshot);
+  }
+
+  Future<void> updateOrganisationLength({int requestNumber}) async {
+    return await globalCollection
+        .document('Number of Organisations')
+        .setData({'number': requestNumber});
+  }
+
+  Future<int> getOrganisationLength() async {
+    return await globalCollection
+        .document("Number of Organisations")
+        .get()
+        .then((value) => value.data['number']);
   }
 }

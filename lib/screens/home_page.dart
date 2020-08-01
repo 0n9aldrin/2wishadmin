@@ -11,9 +11,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: DrawerWidget(
-        context: context,
-      ),
+      drawer: DrawerWidget(context: context),
       appBar: AppBar(
         title: Text("Admin"),
       ),

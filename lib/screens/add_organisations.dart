@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:two_wish_admin/components/drawer.dart';
 import 'package:two_wish_admin/services/database.dart';
 
-class UpdateOrganisation extends StatefulWidget {
+class AddOrganisation extends StatefulWidget {
   @override
-  _UpdateOrganisationState createState() => _UpdateOrganisationState();
+  _AddOrganisationState createState() => _AddOrganisationState();
 }
 
-class _UpdateOrganisationState extends State<UpdateOrganisation> {
+class _AddOrganisationState extends State<AddOrganisation> {
   List<Widget> itemsList = [];
   List<Map<String, dynamic>> map = [];
 
@@ -34,7 +34,7 @@ class _UpdateOrganisationState extends State<UpdateOrganisation> {
           context: context,
         ),
         appBar: AppBar(
-          title: Text("Update Organisation"),
+          title: Text("Add Organisation"),
         ),
         body: Builder(
           builder: (context) => Container(
@@ -134,22 +134,26 @@ class _UpdateOrganisationState extends State<UpdateOrganisation> {
                   ),
                   SizedBox(height: 10),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       for (dynamic index in itemsList) {
                         if (index != Container()) {
                           map.add({
                             'Item': index.itemNameController.text,
                             'Image URL': index.itemImageController.text,
                             'Requested Amount':
-                                index.itemRequestedController.text,
-                            'Amount received': index.itemReceivedController.text
+                                int.parse(index.itemRequestedController.text),
+                            'Amount received':
+                                int.parse(index.itemReceivedController.text)
                           });
                         }
                       }
+                      DatabaseService databaseService = DatabaseService();
+                      int organisationLength =
+                          await databaseService.getOrganisationLength();
                       try {
-                        DatabaseService().addOrganisationData(
+                        databaseService.addOrganisationData(
+                          documentID: (organisationLength + 1).toString(),
                           name: nameController.text,
-                          organisationId: '2',
                           location: locationController.text,
                           description: descriptionController.text,
                           items: map,
@@ -159,6 +163,8 @@ class _UpdateOrganisationState extends State<UpdateOrganisation> {
                             content: Text('Submission Successful'),
                           ),
                         );
+                        databaseService.updateOrganisationLength(
+                            requestNumber: organisationLength + 1);
                         nameController.clear();
                         locationController.clear();
                         descriptionController.clear();
