@@ -38,6 +38,13 @@ class DrawerWidget extends StatelessWidget {
               Navigator.pushReplacementNamed(context, '/requests');
             },
           ),
+          ListTile(
+            leading: Icon(Icons.shopping_basket),
+            title: Text('Organisations'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/organisations');
+            },
+          ),
         ],
       ),
     );

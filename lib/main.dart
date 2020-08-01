@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:two_wish_admin/screens/home_page.dart';
+import 'package:two_wish_admin/screens/organisations_page.dart';
 import 'package:two_wish_admin/screens/requests_page.dart';
 import 'package:two_wish_admin/screens/update_organisations.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => MyHomePage(),
         '/updateOrganisation': (context) => UpdateOrganisation(),
         '/requests': (context) => RequestsPage(),
+        '/organisations': (context) => OrganisationsPage(),
       },
     );
   }
