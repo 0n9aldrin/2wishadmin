@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:two_wish_admin/const.dart';
 import 'package:two_wish_admin/models/organisation.dart';
+import 'package:two_wish_admin/screens/add_organisations.dart';
 
 class OrganisationCard extends StatelessWidget {
   final List<Organisation> organisationList;
@@ -15,7 +16,12 @@ class OrganisationCard extends StatelessWidget {
           color: Colors.blue,
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: InkWell(
-        onTap: () async {},
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => AddOrganisation()));
+        },
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(

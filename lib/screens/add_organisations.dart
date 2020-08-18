@@ -143,7 +143,8 @@ class _AddOrganisationState extends State<AddOrganisation> {
                             'Requested Amount':
                                 int.parse(index.itemRequestedController.text),
                             'Amount received':
-                                int.parse(index.itemReceivedController.text)
+                                int.parse(index.itemReceivedController.text),
+                            'Popular item': index.isSwitched
                           });
                         }
                       }
@@ -205,16 +206,21 @@ class _AddOrganisationState extends State<AddOrganisation> {
   }
 }
 
-class ItemWidget extends StatelessWidget {
+class ItemWidget extends StatefulWidget {
   final Function function;
   final int index;
-  ItemWidget({this.function, this.index});
-
   final TextEditingController itemNameController = TextEditingController();
   final TextEditingController itemImageController = TextEditingController();
   final TextEditingController itemRequestedController = TextEditingController();
   final TextEditingController itemReceivedController = TextEditingController();
+  bool isSwitched = false;
+  ItemWidget({this.function, this.index});
 
+  @override
+  _ItemWidgetState createState() => _ItemWidgetState();
+}
+
+class _ItemWidgetState extends State<ItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -228,7 +234,7 @@ class ItemWidget extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 TextField(
-                  controller: itemNameController,
+                  controller: widget.itemNameController,
                   decoration: InputDecoration(
                     hintText: "Name of item",
                     border: OutlineInputBorder(),
@@ -236,7 +242,7 @@ class ItemWidget extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 TextField(
-                  controller: itemImageController,
+                  controller: widget.itemImageController,
                   decoration: InputDecoration(
                     hintText: "Image URL",
                     border: OutlineInputBorder(),
@@ -245,7 +251,7 @@ class ItemWidget extends StatelessWidget {
                 SizedBox(height: 8),
                 TextField(
                   keyboardType: TextInputType.number,
-                  controller: itemRequestedController,
+                  controller: widget.itemRequestedController,
                   decoration: InputDecoration(
                     hintText: "Requested Amount",
                     border: OutlineInputBorder(),
@@ -254,15 +260,30 @@ class ItemWidget extends StatelessWidget {
                 SizedBox(height: 8),
                 TextField(
                   keyboardType: TextInputType.number,
-                  controller: itemReceivedController,
+                  controller: widget.itemReceivedController,
                   decoration: InputDecoration(
                     hintText: "Amount received",
                     border: OutlineInputBorder(),
                   ),
                 ),
                 SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text("Popular item?"),
+                    Switch(
+                      value: widget.isSwitched,
+                      onChanged: (value) {
+                        setState(() {
+                          widget.isSwitched = value;
+                        });
+                      },
+                      activeTrackColor: Colors.lightGreenAccent,
+                      activeColor: Colors.green,
+                    ),
+                  ],
+                ),
                 RaisedButton(
-                  onPressed: function,
+                  onPressed: widget.function,
                   child: Row(
                     children: <Widget>[
                       Spacer(),
