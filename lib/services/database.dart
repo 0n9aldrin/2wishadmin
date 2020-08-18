@@ -13,6 +13,7 @@ class DatabaseService {
   Future<void> addOrganisationData(
       {String name,
       String documentID,
+      String imageURL,
       String location,
       String description,
       List<Map<String, dynamic>> items}) async {
@@ -20,6 +21,7 @@ class DatabaseService {
       'Name': name,
       'Location': location,
       'Description': description,
+      'Images': imageURL,
       'Items': items
     });
   }
@@ -27,13 +29,15 @@ class DatabaseService {
   Future<void> updateOrganisationData(
       {String name,
       String location,
+      String imageURL,
       String description,
       List<Map<String, dynamic>> items}) async {
     return await organisationCollection.document().setData({
       'Name': name,
       'Location': location,
       'Description': description,
-      'Items': items
+      'Items': items,
+      'Images': imageURL,
     });
   }
 
@@ -43,7 +47,9 @@ class DatabaseService {
           name: doc.data['Name'] ?? '',
           location: doc.data['Location'] ?? '',
           description: doc.data['Description'] ?? '',
-          items: doc.data['Items'] ?? []);
+          items: doc.data['Items'] ?? [],
+          imgURL: doc.data['Images'] ?? '',
+          documentID: doc.documentID ?? '');
     }).toList();
   }
 

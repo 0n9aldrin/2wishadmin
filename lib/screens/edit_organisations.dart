@@ -1,15 +1,20 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:two_wish_admin/components/drawer.dart';
+import 'package:two_wish_admin/models/organisation.dart';
 import 'package:two_wish_admin/services/database.dart';
 
-class AddOrganisation extends StatefulWidget {
+import 'add_organisations.dart';
+
+class EditOrganisation extends StatefulWidget {
+  final Organisation organisation;
+  final int index;
+  EditOrganisation({this.organisation, this.index});
+
   @override
-  _AddOrganisationState createState() => _AddOrganisationState();
+  _EditOrganisationState createState() => _EditOrganisationState();
 }
 
-class _AddOrganisationState extends State<AddOrganisation> {
+class _EditOrganisationState extends State<EditOrganisation> {
   List<Widget> itemsList = [];
   List<Map<String, dynamic>> map = [];
 
@@ -27,14 +32,42 @@ class _AddOrganisationState extends State<AddOrganisation> {
   }
 
   @override
+  void initState() {
+    nameController.text = widget.organisation.name;
+    locationController.text = widget.organisation.location;
+    descriptionController.text = widget.organisation.description;
+    imageController.text = widget.organisation.imgURL;
+    for (int x = 0; x < widget.organisation.items.length; x++) {
+      itemsList.add(
+        ItemWidget(
+          index: x,
+          function: () {
+            setState(() {
+              itemsList[x] = Container();
+            });
+          },
+          itemName: widget.organisation.items[x]['Item'],
+          itemImage: widget.organisation.items[x]['Image URL'],
+          itemReceived: widget.organisation.items[x]['Amount received'],
+          itemRequested: widget.organisation.items[x]['Requested Amount'],
+          popular: widget.organisation.items[x]['Popular item'],
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        drawer: DrawerWidget(
-          context: context,
-        ),
         appBar: AppBar(
-          title: Text("Add Organisation"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text("Edit Organisation"),
         ),
         body: Builder(
           builder: (context) => Container(
@@ -116,11 +149,14 @@ class _AddOrganisationState extends State<AddOrganisation> {
                   ),
                   RaisedButton(
                     onPressed: () {
+                      print(itemsList);
                       setState(() {
                         int itemListLength = itemsList.length;
                         itemsList.add(
                           ItemWidget(
                             index: itemListLength,
+                            itemRequested: null,
+                            itemReceived: null,
                             function: () {
                               setState(() {
                                 itemsList[itemListLength] = Container();
@@ -128,6 +164,7 @@ class _AddOrganisationState extends State<AddOrganisation> {
                             },
                           ),
                         );
+                        print(itemsList);
                       });
                     },
                     child: Text("Add item"),
@@ -153,10 +190,11 @@ class _AddOrganisationState extends State<AddOrganisation> {
                           await databaseService.getOrganisationLength();
                       try {
                         databaseService.addOrganisationData(
-                          documentID: (organisationLength + 1).toString(),
+                          documentID: widget.organisation.documentID,
                           name: nameController.text,
                           location: locationController.text,
                           description: descriptionController.text,
+                          imageURL: imageController.text,
                           items: map,
                         );
                         Scaffold.of(context).showSnackBar(
@@ -166,13 +204,7 @@ class _AddOrganisationState extends State<AddOrganisation> {
                         );
                         databaseService.updateOrganisationLength(
                             requestNumber: organisationLength + 1);
-                        nameController.clear();
-                        locationController.clear();
-                        descriptionController.clear();
-                        imageController.clear();
-                        itemsList.clear();
-                        map.clear();
-                        setState(() {});
+                        Navigator.pop(context);
                       } catch (e) {
                         Scaffold.of(context).showSnackBar(SnackBar(
                           content: Text(e.toString()),
@@ -188,7 +220,7 @@ class _AddOrganisationState extends State<AddOrganisation> {
                       child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          "DONE",
+                          "UPDATE",
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         ),
@@ -202,132 +234,6 @@ class _AddOrganisationState extends State<AddOrganisation> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class ItemWidget extends StatefulWidget {
-  final Function function;
-  final int index;
-  final TextEditingController itemNameController = TextEditingController();
-  final TextEditingController itemImageController = TextEditingController();
-  final TextEditingController itemRequestedController = TextEditingController();
-  final TextEditingController itemReceivedController = TextEditingController();
-  bool isSwitched = false;
-  final String itemName;
-  final String itemImage;
-  final int itemRequested;
-  final int itemReceived;
-  final bool popular;
-  ItemWidget(
-      {this.function,
-      this.index,
-      this.itemName,
-      this.itemImage,
-      this.itemRequested,
-      this.itemReceived,
-      this.popular});
-
-  @override
-  _ItemWidgetState createState() => _ItemWidgetState();
-}
-
-class _ItemWidgetState extends State<ItemWidget> {
-  @override
-  void initState() {
-    widget.itemNameController.text = widget.itemName ?? '';
-    widget.itemImageController.text = widget.itemImage ?? '';
-    widget.itemRequestedController.text = widget.itemRequested.toString() ?? '';
-    widget.itemReceivedController.text = widget.itemReceived.toString() ?? '';
-    widget.isSwitched = widget.popular ?? false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: widget.itemNameController,
-                  decoration: InputDecoration(
-                    hintText: "Name of item",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  controller: widget.itemImageController,
-                  decoration: InputDecoration(
-                    hintText: "Image URL",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  controller: widget.itemRequestedController,
-                  decoration: InputDecoration(
-                    hintText: "Requested Amount",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 8),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  controller: widget.itemReceivedController,
-                  decoration: InputDecoration(
-                    hintText: "Amount received",
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Text("Popular item?"),
-                    Switch(
-                      value: widget.isSwitched,
-                      onChanged: (value) {
-                        setState(() {
-                          widget.isSwitched = value;
-                        });
-                      },
-                      activeTrackColor: Colors.lightGreenAccent,
-                      activeColor: Colors.green,
-                    ),
-                  ],
-                ),
-                RaisedButton(
-                  onPressed: widget.function,
-                  child: Row(
-                    children: <Widget>[
-                      Spacer(),
-                      Text(
-                        "Delete item",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      Icon(
-                        Icons.delete,
-                        color: Colors.black,
-                      ),
-                      Spacer(),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        )
-      ],
     );
   }
 }
