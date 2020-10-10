@@ -1,18 +1,13 @@
 # 2wishadmin
 
-A new Flutter application.
+The admin side Flutter application of the 2wish.hkt company. The admin app can edit and add organisations as well add items that the organisations require.
 
-## Getting Started
+Consumer side Github Repository: https://github.com/0n9aldrin/2wish
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<p float="left">
+  <img src="assets/images/Screenshot_20201010-223649.png" width="300" />
+  <img src="assets/images/Screenshot_20201010-223656.png" width="300" />
+  <img src="assets/images/Screenshot_20201010-223659.png" width="300" />
+</p>
 
 

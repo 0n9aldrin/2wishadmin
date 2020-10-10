@@ -84,4 +84,8 @@ class DatabaseService {
         .get()
         .then((value) => value.data['number']);
   }
+
+  Future<void> deleteOrganisation({String documentID}) async {
+    return await organisationCollection.document(documentID).delete();
+  }
 }

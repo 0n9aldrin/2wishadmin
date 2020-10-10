@@ -3,6 +3,7 @@ import 'package:two_wish_admin/const.dart';
 import 'package:two_wish_admin/models/organisation.dart';
 import 'package:two_wish_admin/screens/add_organisations.dart';
 import 'package:two_wish_admin/screens/edit_organisations.dart';
+import 'package:two_wish_admin/services/database.dart';
 
 class OrganisationCard extends StatelessWidget {
   final List<Organisation> organisationList;
@@ -92,8 +93,16 @@ class OrganisationCard extends StatelessWidget {
                             color: Colors.blue,
                           ),
                           FlatButton(
-                            onPressed: () {
-                              print(organisationList[index].documentID);
+                            onPressed: () async {
+                              DatabaseService databaseService =
+                                  DatabaseService();
+                              databaseService.deleteOrganisation(
+                                  documentID:
+                                      organisationList[index].documentID);
+                              int length =
+                                  await databaseService.getOrganisationLength();
+                              databaseService.updateOrganisationLength(
+                                  requestNumber: (length - 1));
                               Navigator.pop(context);
                             },
                             child: Text("Delete"),

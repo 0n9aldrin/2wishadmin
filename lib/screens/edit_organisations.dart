@@ -186,8 +186,6 @@ class _EditOrganisationState extends State<EditOrganisation> {
                         }
                       }
                       DatabaseService databaseService = DatabaseService();
-                      int organisationLength =
-                          await databaseService.getOrganisationLength();
                       try {
                         databaseService.addOrganisationData(
                           documentID: widget.organisation.documentID,
@@ -202,8 +200,6 @@ class _EditOrganisationState extends State<EditOrganisation> {
                             content: Text('Submission Successful'),
                           ),
                         );
-                        databaseService.updateOrganisationLength(
-                            requestNumber: organisationLength + 1);
                         Navigator.pop(context);
                       } catch (e) {
                         Scaffold.of(context).showSnackBar(SnackBar(
